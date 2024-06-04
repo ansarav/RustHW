@@ -34,6 +34,12 @@ impl Color {
      * https://doc.rust-lang.org/std/primitive.u8.html
      */
     pub fn cross(c1: &Color, c2: &Color) -> Color {
-        unimplemented!();
+        //could also use let to to declare set variable fields
+        Color {
+            //set the field instance
+            r: c1.r.wrapping_add(c2.r),
+            g: c1.g.wrapping_add(c2.g),
+            b: c1.b.wrapping_add(c2.b),
+        }
     }
 }
