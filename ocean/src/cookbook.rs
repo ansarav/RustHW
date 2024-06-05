@@ -2,6 +2,7 @@ use crate::diet::Diet;
 
 #[derive(Debug)]
 pub struct Cookbook {
+    //stores collection of recipies
     recipes: Vec<Recipe>,
 }
 

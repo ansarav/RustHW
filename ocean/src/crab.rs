@@ -9,28 +9,40 @@ use std::rc::Rc;
 #[derive(Debug)]
 pub struct Crab {
     // TODO: Add fields here (some in part 1, some in part 2)
+    // comes from the crates we imported
+    name : String,
+    speed: u32,
+    color: Color,
+    diet: Diet,
 }
+
+
 
 // Do NOT implement Copy for Crab.
 impl Crab {
     pub fn new(name: String, speed: u32, color: Color, diet: Diet) -> Crab {
-        unimplemented!();
+        Crab { name , speed, color, diet } //similar structure found in colors and cookbook
     }
 
+    // the "&" allows for us to have access to name
+    //without taking ownershi over it. thus we are letting
+    //the method borrow the field name
     pub fn name(&self) -> &str {
-        unimplemented!();
+        &self.name
     }
 
+    //not to sure why for speed and Diet we are allowed to
+    //return directly the fields and not the reference only
     pub fn speed(&self) -> u32 {
-        unimplemented!();
+        self.speed
     }
 
     pub fn color(&self) -> &Color {
-        unimplemented!();
+        &self.color
     }
 
     pub fn diet(&self) -> Diet {
-        unimplemented!();
+        self.diet
     }
 
     // PART 2 BELOW
