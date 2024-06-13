@@ -9,13 +9,14 @@ use std::slice::Iter;
 pub struct Beach {
     // TODO: Declare the fields of the Beach struct here.
     // we want to get access to all the crabs in beach
-    all_crabs : Vec<Crab>
+    all_crabs : Vec<Crab>,
+    clans: ClanSystem
 
 }
 
 impl Beach {
     pub fn new() -> Beach {
-        Beach{all_crabs: Vec::new()}
+        Beach{all_crabs: Vec::new(), clans: ClanSystem::new()}
     }
 
     /**
@@ -84,25 +85,32 @@ impl Beach {
     pub fn breed_crabs(&mut self, i: usize, j: usize, name: String) {
         //get_mut from IndexMut 
         if let Some(mut parent_i ) = self.all_crabs.get_mut(i){
-            if let Some(mut parent_j) = self.all_crabs.get_mut(j){
+            if let Some(parent_j) = self.all_crabs.get(j){
+
                 let childs_color = Color::cross(parent_i.color(), parent_j.color());
                 let childs_diet = Diet::random_diet();
-                let child_born = Crab::new(name,1,childs_color,childs_diet)
+                let child_born = Crab::new(name,1,childs_color,childs_diet);
+                self.add_crab(child_born);
             }
             else{
                 panic!("Index j out of bounds");
             }
-            else{
+        }
+        else {
                 panic!("Index i out of bounds");
-            }
         }
     }
+    
+
+
+
+
 
     /**
      * Returns a reference to the clan system associated with the beach.
      */
     pub fn get_clan_system(&self) -> &ClanSystem {
-        &self.get_clan_system
+        &self.clans
     }
 
     /**
@@ -120,4 +128,5 @@ impl Beach {
     pub fn get_winner_clan(&self, id1: &str, id2: &str) -> Result<Option<String>, String> {
         unimplemented!();
     }
+
 }

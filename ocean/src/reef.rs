@@ -11,7 +11,7 @@ pub struct Reef {
 
 impl Reef {
     pub fn new() -> Self {
-        Reef {prey: VecDeque ::new()}
+        Reef {prey: VecDeque::new()}
     }
 
     pub fn prey(&self) -> Iter<Box<dyn Prey>> {
@@ -37,6 +37,6 @@ impl Reef {
      * The callee of this function receives ownership of the boxed prey.
      */
     pub fn take_prey(&mut self) -> Option<Box<dyn Prey>> {
-        self.prey.pop_front();
+        self.prey.pop_front()
     }
 }
