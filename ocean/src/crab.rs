@@ -129,33 +129,32 @@ impl Crab {
 
         //while prey can be caught
         //loop{
-           // if let Some((prey, index)) = self.catch_prey(){
-        while let Some((mut prey, index)) = self.catch_prey() {    
-                //edible 
-                //let diet_match = prey.diet() == self.diet();
+        while let Some((mut prey, index)) = self.catch_prey() {
+            //if let Some((mut prey, index)) = self.catch_prey(){
+            if prey.try_escape(self){
+                escaped.push((prey, index));
+            }  
+            else if prey.diet() == self.diet() {
                 catched = true;
-                if prey.diet() == self.diet() && !prey.try_escape(self) {
-                //if diet_match && (prey.try_escape(self) == false) {
-                //if diet_match && !prey.try_escape(self) {
-                    catched = true;
-                    //release
-                    self.release_prey(prey, index);
-                    break;
-                }
-                else {
-                    escaped.push((prey,index));
-                }          
+                break;
+            }      
+            else{
+                escaped.push((prey,index));
             }
 
-            //else{break;}
-        
+
+            if catched {break;}
+        }
+
+            
 
         //release escaped
-        for(prey, index) in escaped {
+        for (prey, index) in escaped {
             self.release_prey(prey, index);
         }
         return catched
     }
+
 
     /**
      * Returns Some of any recipe from the given cookbook that matches the crab's diet
