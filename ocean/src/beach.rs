@@ -2,23 +2,27 @@ use crate::color::Color;
 use crate::crab::Crab;
 use crate::diet::Diet;
 use crate::clans::ClanSystem;
+use std::collections;
 use std::slice::Iter;
 
 #[derive(Debug)]
 pub struct Beach {
     // TODO: Declare the fields of the Beach struct here.
+    // we want to get access to all the crabs in beach
+    all_crabs : Vec<Crab>
+
 }
 
 impl Beach {
     pub fn new() -> Beach {
-        unimplemented!();
+        Beach{all_crabs: Vec::new()}
     }
 
     /**
      * Returns the number of crabs on the beach.
      */
     pub fn size(&self) -> usize {
-        unimplemented!();
+        self.all_crabs.len()
     }
 
     /**
@@ -29,15 +33,16 @@ impl Beach {
      *     - The newly added crab should be at the END of the collection.
      */
     pub fn add_crab(&mut self, crab: Crab) {
-        unimplemented!();
+        self.all_crabs.push(crab);
     }
 
     pub fn get_crab(&self, index: usize) -> &Crab {
-        unimplemented!();
+        // do NOT take ownership here, we just want to borrow so i'll use "&"
+        &self.all_crabs[index]
     }
 
     pub fn crabs(&self) -> Iter<Crab> {
-        unimplemented!();
+        self.all_crabs.iter()
     }
 
     /**
@@ -46,14 +51,29 @@ impl Beach {
      *   - Some of a reference to the Crab with the highest speed.
      */
     pub fn get_fastest_crab(&self) -> Option<&Crab> {
-        unimplemented!();
+        let mut fastest_crab = None;
+        let mut fastest_speed = 0;
+        for ind_crab in &self.all_crabs {
+            if ind_crab.speed() > fastest_speed {
+                fastest_crab = Some(ind_crab);
+                fastest_speed = ind_crab.speed();
+            }
+        }
+        fastest_crab
     }
 
     /**
      * Returns a vector of references to the crabs with a given name.
      */
     pub fn find_crabs_by_name(&self, name: &str) -> Vec<&Crab> {
-        unimplemented!();
+        // need to return Vector
+        //use filter and then out into a collection all the crabs that have the same name
+
+        let crab_iterator = self.crabs();
+        let filter_names = crab_iterator.filter(|crab| crab.name() == name);
+        let collections_crabs: Vec<&Crab> = filter_names.collect();
+
+        collections_crabs
     }
 
     /**
