@@ -14,6 +14,8 @@ pub struct Crab {
     speed: u32,
     color: Color,
     diet: Diet,
+    //adding reefs to this struct
+    reefs: Vec<Rc<RefCell<Reef>>>
 }
 
 
@@ -21,7 +23,7 @@ pub struct Crab {
 // Do NOT implement Copy for Crab.
 impl Crab {
     pub fn new(name: String, speed: u32, color: Color, diet: Diet) -> Crab {
-        Crab { name , speed, color, diet } //similar structure found in colors and cookbook
+        Crab { name , speed, color, diet, reefs: Vec::new() } //similar structure found in colors and cookbook
     }
 
     // the "&" allows for us to have access to name
@@ -52,7 +54,7 @@ impl Crab {
      * Have this crab discover a new reef, adding it to its list of reefs.
      */
     pub fn discover_reef(&mut self, reef: Rc<RefCell<Reef>>) {
-        unimplemented!();
+        self.reefs.push(reef)
     }
 
     /**
