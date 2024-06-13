@@ -84,21 +84,36 @@ impl Beach {
      */
     pub fn breed_crabs(&mut self, i: usize, j: usize, name: String) {
         //get_mut from IndexMut 
-        if let Some(mut parent_i ) = self.all_crabs.get_mut(i){
-            if let Some(parent_j) = self.all_crabs.get(j){
+        // if let Some(mut parent_i ) = self.all_crabs.get_mut(i){
+        //     if let Some(parent_j) = self.all_crabs.get(j){
 
-                let childs_color = Color::cross(parent_i.color(), parent_j.color());
-                let childs_diet = Diet::random_diet();
-                let child_born = Crab::new(name,1,childs_color,childs_diet);
-                self.add_crab(child_born);
-            }
-            else{
-                panic!("Index j out of bounds");
-            }
+        //         let childs_color = Color::cross(parent_i.color(), parent_j.color());
+        //         let childs_diet = Diet::random_diet();
+        //         let child_born = Crab::new(name,1,childs_color,childs_diet);
+        //         self.add_crab(child_born);
+        //     }
+        //     else{
+        //         panic!("Index j out of bounds");
+        //     }
+        // }
+        // else {
+        //         panic!("Index i out of bounds");
+        // }
+
+        if i >= self.all_crabs.len() || j >= self.all_crabs.len() {
+            panic!("Index out of bounds");
         }
-        else {
-                panic!("Index i out of bounds");
-        }
+
+        let parent_i = &self.all_crabs[i];
+        let parent_j = &self.all_crabs[j];
+
+        let childs_color = Color::cross(parent_i.color(), parent_j.color());
+        let childs_diet = Diet::random_diet();
+        let child_born = Crab::new(name, 1, childs_color, childs_diet);
+
+        self.add_crab(child_born);
+
+
     }
     
 
