@@ -80,7 +80,8 @@ impl Crab {
      * Releases the given prey back into the reef at the given index.
      */
     fn release_prey(&mut self, prey: Box<dyn Prey>, reef_index: usize) {
-        if let Some(reef) = self.reefs.get_mut(reef_index){
+        //if let Some(reef) = self.reefs.get_mut(reef_index){
+        if let Some(reef) = self.reefs.get(reef_index){
             let mut reef = reef.borrow_mut();
             reef.add_prey(prey);
         }
@@ -127,27 +128,30 @@ impl Crab {
         let mut catched = false;
 
         //while prey can be caught
-        loop{
-            if let Some((prey, index)) = self.catch_prey(){
+        //loop{
+           // if let Some((prey, index)) = self.catch_prey(){
+        while let Some((mut prey, index)) = self.catch_prey() {    
                 //edible 
-                let diet_match = prey.diet() == self.diet();
+                //let diet_match = prey.diet() == self.diet();
+                catched = true;
+                if prey.diet() == self.diet() && !prey.try_escape(self) {
                 //if diet_match && (prey.try_escape(self) == false) {
-                if diet_match && !prey.try_escape(self) {
+                //if diet_match && !prey.try_escape(self) {
                     catched = true;
                     //release
                     self.release_prey(prey, index);
                     break;
                 }
-            else{
+                else {
                     escaped.push((prey,index));
                 }          
             }
 
-            else{break;}
-        }
+            //else{break;}
+        
 
         //release escaped
-        for (prey, index) in escaped {
+        for(prey, index) in escaped {
             self.release_prey(prey, index);
         }
         return catched
