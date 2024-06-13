@@ -82,14 +82,27 @@ impl Beach {
      * the method should panic.
      */
     pub fn breed_crabs(&mut self, i: usize, j: usize, name: String) {
-        unimplemented!();
+        //get_mut from IndexMut 
+        if let Some(mut parent_i ) = self.all_crabs.get_mut(i){
+            if let Some(mut parent_j) = self.all_crabs.get_mut(j){
+                let childs_color = Color::cross(parent_i.color(), parent_j.color());
+                let childs_diet = Diet::random_diet();
+                let child_born = Crab::new(name,1,childs_color,childs_diet)
+            }
+            else{
+                panic!("Index j out of bounds");
+            }
+            else{
+                panic!("Index i out of bounds");
+            }
+        }
     }
 
     /**
      * Returns a reference to the clan system associated with the beach.
      */
     pub fn get_clan_system(&self) -> &ClanSystem {
-        unimplemented!();
+        &self.get_clan_system
     }
 
     /**
@@ -97,7 +110,7 @@ impl Beach {
      * A crab can only belong to one clan.
      */
     pub fn add_member_to_clan(&mut self, clan_id: &str, crab_name: &str) {
-        unimplemented!();
+       unimplemented!();
     }
 
     /**
