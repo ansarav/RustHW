@@ -67,14 +67,23 @@ impl Crab {
      * If all reefs are empty, or this crab has no reefs, return None.
      */
     fn catch_prey(&mut self) -> Option<(Box<dyn Prey>, usize)> {
-        unimplemented!();
+        for (index, reef) in self.reefs.iter().enumerate(){
+            let mut reef = reef.borrow_mut();
+            if let Some(prey) = reef.take_prey(){
+                return Some((prey,index));
+            }
+        }
+        return None
     }
 
     /**
      * Releases the given prey back into the reef at the given index.
      */
     fn release_prey(&mut self, prey: Box<dyn Prey>, reef_index: usize) {
-        unimplemented!();
+        if let Some(reef) = self.reefs.get_mut(reef_index){
+            let mut reef = reef.borrow_mut();
+            reef.add_prey(prey);
+        }
     }
 
     /**
@@ -114,7 +123,34 @@ impl Crab {
      * Note: this pseudocode reads like a terrible poem.
      */
     pub fn hunt(&mut self) -> bool {
-        unimplemented!();
+        let mut escaped = Vec::new();
+        let mut catched = false;
+
+        //while prey can be caught
+        loop{
+            if let Some((prey, index)) = self.catch_prey(){
+                //edible 
+                let diet_match = prey.diet() == self.diet();
+                //if diet_match && (prey.try_escape(self) == false) {
+                if diet_match && !prey.try_escape(self) {
+                    catched = true;
+                    //release
+                    self.release_prey(prey, index);
+                    break;
+                }
+            else{
+                    escaped.push((prey,index));
+                }          
+            }
+
+            else{break;}
+        }
+
+        //release escaped
+        for (prey, index) in escaped {
+            self.release_prey(prey, index);
+        }
+        return catched
     }
 
     /**
