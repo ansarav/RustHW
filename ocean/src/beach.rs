@@ -7,8 +7,7 @@ use std::slice::Iter;
 
 #[derive(Debug)]
 pub struct Beach {
-    // TODO: Declare the fields of the Beach struct here.
-    // we want to get access to all the crabs in beach
+     // we want to get access to all the crabs in beach
     all_crabs : Vec<Crab>,
     clans: ClanSystem
 
@@ -133,15 +132,46 @@ impl Beach {
      * A crab can only belong to one clan.
      */
     pub fn add_member_to_clan(&mut self, clan_id: &str, crab_name: &str) {
-       unimplemented!();
-    }
+        let clan = &mut self.clans;
+        clan.add_member(clan_id, crab_name)
+     }
 
     /**
      * Returns the id of the clan that wins the competition given two clan ids. The winner is decided based on the average speed of the clan members.
      * Return `None` if there are no clear winners between two different existing clans. If the inputs are invalid, return an Err string.
      */
     pub fn get_winner_clan(&self, id1: &str, id2: &str) -> Result<Option<String>, String> {
-        unimplemented!();
+        let clan1 = self.clans.get_clan_member_names(id1);
+        let clan2 =self.clans.get_clan_member_names(id2);
+
+        if clan1.is_empty(){
+            return Err("ivalid".to_string())
+        }
+        if clan2.is_empty(){
+            return Err("ivalid".to_string())
+        }
+        let avg1_clan1 =self.cal_avg(&clan1);
+        let avg2_clan2 =self.cal_avg(&clan2);
+
+            //Ok and err work together
+        if avg1_clan1 > avg2_clan2  {
+            Ok(Some(id1.to_string()))
+        }
+        else if avg2_clan2 > avg1_clan1{
+            Ok(Some(id2.to_string()))
+        }
+        else{
+            Ok(None)
+        }
     }
 
+    pub fn cal_avg(&self, clan: &[String]) -> f64 {
+    let sum: f64 = self.all_crabs
+        .iter()
+        .filter(|crab| clan.contains(&crab.name().to_string()))
+        .map(|crab| crab.speed() as f64)
+        .sum();
+
+    sum / clan.len() as f64
+}
 }
