@@ -1,7 +1,8 @@
-
+use std::collections::HashMap;
 #[derive(Debug)]
+
 pub struct ClanSystem {
-    clans : HashMap<String, HashSet<String>>,
+    clans : HashMap<String, Vec<String>>,
 }
 
 impl ClanSystem {
@@ -44,17 +45,28 @@ impl ClanSystem {
      */
     pub fn get_largest_clan_id(&self) -> Option<String> {
         //similar format to get_fastest_crab
-        let mut largets_clan_id = None;
-        let largest_size = 0 ;
+        let mut largest_clan_id = None;
+        let mut largest_size = 0 ;
 
         for (clan_id ,members) in &self.clans{
-            let mem_count = members.len();
-            if mem_count > largets_clan_id {
-                largets_clan_id = Some(clan_id.clone());
-                largest_size = mem_count
+            let size_here = members.len();
+            if size_here > largest_size {
+                largest_clan_id = Some(clan_id.clone());
+                largest_size = size_here;
             }
         }
 
-        largets_clan_id
+        largest_clan_id
+    }
+
+    pub fn add_member(&mut self, clan_id: &str, name: &str){
+        if let Some(clan) = self.clans.get_mut(clan_id){
+            clan.push(name.to_string());
+        }
+        else{
+            let mut new_clan = Vec::new();
+            new_clan.push(name.to_string());
+            self.clans.insert(clan_id.to_string(), new_clan);
+        }
     }
 }
