@@ -7,24 +7,25 @@ use std::slice::Iter;
 
 #[derive(Debug)]
 pub struct Ocean {
-    // TODO: Fill in fields here.
+    beaches : Vec<Beach>,
+    reefs: Vec<Rc<RefCell<Reef>>>,
 }
 
 impl Ocean {
     pub fn new() -> Ocean {
-        unimplemented!();
+        Ocean { beaches: Vec::new(), reefs: Vec::new(),}
     }
 
     pub fn add_beach(&mut self, beach: Beach) {
-        unimplemented!();
+        self.beaches.push(beach);
     }
 
     pub fn beaches(&self) -> Iter<Beach> {
-        unimplemented!();
+        self.beaches.iter()
     }
 
     pub fn reefs(&self) -> Iter<Rc<RefCell<Reef>>> {
-        unimplemented!();
+        self.reefs.iter()
     }
 
     /**
@@ -41,6 +42,31 @@ impl Ocean {
         n_clams: u32,
         n_algae: u32,
     ) -> Rc<RefCell<Reef>> {
-        unimplemented!();
+       
+        let mut reef = Reef::new();
+
+        //we just want to iterate and get the range from o to end
+        for i in 0..n_algae{
+            reef.add_prey(Box::new(Algae::new()));
+        }
+        
+        for i in 0..n_minnows{
+            reef.add_prey(Box::new(Minnow::new(25)));
+        }
+
+        for i in 0..n_shrimp{
+            reef.add_prey(Box::new(Shrimp::new(1)));
+        }
+
+        for i in 0..n_clams{
+            reef.add_prey(Box::new(Clam::new()));
+        }
+
+        
+
+        let reef_rc = Rc::new(RefCell::new(reef));
+        self.reefs.push(reef_rc.clone());
+        reef_rc
+
     }
 }
